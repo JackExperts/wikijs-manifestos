@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wikijs-configmap
+data:
+  db-user: "root"
+  db-name: "wikijs"
+  db-type: "mariadb"
+  db-host: "mariadb-service"
+  db-port: "3306"

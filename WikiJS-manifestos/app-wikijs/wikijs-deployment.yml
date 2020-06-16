@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wikijs
+  labels:
+    app: wikijs
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      app: wikijs
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: wikijs
+        tier: frontend
+    spec:
+      containers:
+      - name: wikijs
+        image: requarks/wiki:beta
+        imagePullPolicy: Always
+        env:
+        - name: DB_TYPE
+          valueFrom:
+            configMapKeyRef:
+              key: db-type
+              name: wikijs-configmap
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: db-host
+              name: wikijs-configmap
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: db-port
+              name: wikijs-configmap
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: wikijs-configmap
+              key: db-name
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: wikijs-configmap
+              key: db-user
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: wikijs-secret
+              key: db-pass
+        ports:
+        - containerPort: 3000
+          name: http
